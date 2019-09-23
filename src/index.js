@@ -1,121 +1,84 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './styles.css';
 import './index.css';
+import './fancy_button.css';
 import './popups.css';
-import axios from 'axios';
 import Popup from 'react-popup';
+import ChuckApp from './chuck_app';
 
-class ChuckFact extends React.Component {
+
+class EnterApp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            error: null,
-            isLoaded: false,
-            fact: null,
-            loadingNPoints: 3,
+            includeNsfw: false,
         };
+        this.onCheckboxChange = this.onCheckboxChange.bind(this);
     }
 
-    componentDidMount() {
-        this.interval = setInterval(() => this.tick(), 200);
-
-        axios.get('https://api.chucknorris.io/jokes/random')
-            .then(res => {
-                console.log(res.data.value);
-                this.setState({
-                    fact: res.data.value});
-            })
-            .catch(error => {
-                console.log(error);
-                this.setState({
-                    error: error.toString()});
-                Popup.alert(this.state.error, 'An error has occurred :(');
-            })
-            .finally( () => {
-                this.setState({isLoaded: true});
-            });
-        // window.scrollTo(0, document.body.scrollHeight);
-        window.scroll({top: document.body.scrollHeight, behavior: 'smooth'}); // this line gets executed before axios gets a response
-    }
-
-    componentDidUpdate() {
-        // window.scrollTo(0, document.body.scrollHeight);
-        window.scroll({top: document.body.scrollHeight, behavior: 'smooth'});
-        // document.body.animate({scrollTop: document.body.scrollHeight}, 8000); //,"fast");
-    }
-
-    tick() {
-        this.setState({
-            loadingNPoints: (this.state.loadingNPoints + 1) % 4,
-        });
+    onCheckboxChange() {
+        // pass a function to setState to avoid synchronicity issues
+        this.setState((state) => ({includeNsfw: !state.includeNsfw}) );
     }
 
     render() {
-        let fact;
-        if (!this.state.isLoaded) {
-            fact = 'Loading ' + '.'.repeat(this.state.loadingNPoints);
-        } else {
-            clearInterval(this.interval);
-            this.interval = null;
-            if (this.state.error) {
-                fact = null;
-            } else {
-                fact = this.state.fact;
-            }
-        }
-        if (fact) {
-            return (
-                <li>
-                    {/*<strong>*/}
-                        {fact}
-                    {/*</strong>*/}
-                </li>
-            );
-        }
-        else {
-            return null;
-        }
-    }
-
-    componentWillUnmount() {
-        if (this.interval) {
-            clearInterval(this.interval);
-        }
+        return (
+            <div className="enter-page">
+                <img id="dancing_chuck" src="dancing_chuck.gif" alt="Dancing Chuck" height="80"/>
+                <div className="enter-main-region">
+                    <button
+                        onClick={() => this.props.enterChuckApp(this.state.includeNsfw)}
+                    >
+                        Take me to ChuckFacts!
+                    </button>
+                    {/*<p className="message">*/}
+                        <label htmlFor="include_nsfw" className="toggle">
+                            <input
+                                type="checkbox"
+                                className="toggle__input"
+                                id="include_nsfw"
+                                onChange={this.onCheckboxChange}
+                            />
+                            <span className="toggle__label">
+                                <span className="toggle__text">Show NSFW facts</span>
+                            </span>
+                        </label>
+                    {/*</p>*/}
+                </div>
+            </div>
+        );
     }
 
 }
 
 
-class ChuckApp extends React.Component {
+class Main extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {factsList: []};
-        // this.ref = React.createRef()
+        this.state = {
+            currentScreen: 'EnterApp',
+            showNsfwFacts: false,
+        }
     }
 
-    addChuckFact() {
-        this.setState({
-            factsList: this.state.factsList.concat(<ChuckFact key={this.state.factsList.length} />)
-        });
-    }
-
-    render(){
-        let buttonText = ( this.state.factsList.length > 0 ? 'Add another Chuck Norris fact' : 'Add a Chuck Norris fact');
+    render() {
+        const currentScreenRendered =
+            this.state.currentScreen === 'EnterApp' ?
+                <EnterApp
+                    enterChuckApp={
+                        (showNsfwFacts) => this.setState({
+                            currentScreen: 'ChuckApp',
+                            showNsfwFacts: showNsfwFacts,
+                        })
+                    }
+                />
+                :
+                <ChuckApp showNsfwFacts={this.state.showNsfwFacts} />;
         return (
-            <div>
-                <button
-                    className="block"
-                    id="add_fact_button"
-                    onClick={() => this.addChuckFact()}
-                >
-                    {buttonText}
-                </button>
-                <button className="block" id="hidden"> {buttonText} </button>   {/*merely to make the layout work as expected*/}
-                <div>
-                <ul>
-                    {this.state.factsList}
-                </ul>
-                </div>
+           <div>
+               <Popup />
+               {currentScreenRendered}
             </div>
         );
     }
@@ -123,9 +86,6 @@ class ChuckApp extends React.Component {
 
 
 ReactDOM.render(
-    <div>
-        <Popup />
-        <ChuckApp />
-    </div>,
+    <Main />,
     document.getElementById('root')
 );

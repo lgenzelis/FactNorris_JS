@@ -1,0 +1,36 @@
+#add_fact_button_hidden, #add_fact_button {
+    /*display: block;*/
+    width: 100%;
+    border: 1px solid #cccccc;
+    /*background-color: #4CAF50;*/
+    /*padding: 14px 28px;*/
+    /*font-size: 16px;*/
+    /*cursor: pointer;*/
+    /*text-align: center;*/
+    /*font-weight: bold;*/
+    /*color: #FFFEE3;*/
+}
+
+#add_fact_button {
+    position: fixed; /*absolute;*/
+    top: 0; /*-4px;*/
+}
+
+/*#add_fact_button:hover {*/
+/*    background-color: #2d662f;*/
+/*}*/
+
+/*#add_fact_button:focus {*/
+/*    !*outline: none;*!*/
+/*}*/
+
+/*#add_fact_button:active {*/
+/*    background-color: #65e669;*/
+/*}*/
+
+#add_fact_button_hidden {
+    visibility: hidden;
+}
+
+
+
