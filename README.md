@@ -1,3 +1,6 @@
+# FactNorris JS
+This is a Web App that I made for fun. It uses the public-api https://api.chucknorris.io/ to fetch fictitious facts about  *Walker Texas Ranger* star Chuck Norris. 
+
 ## Available Scripts
 
 First of all, you shold go the project directory and run:
@@ -20,6 +23,4 @@ Builds the app for production to the `build` folder.<br>
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
 The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The app is ready to be deployed!
