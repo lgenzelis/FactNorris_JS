@@ -1,36 +1,96 @@
-#add_fact_button_hidden, #add_fact_button {
-    /*display: block;*/
-    width: 100%;
-    border: 1px solid #cccccc;
-    /*background-color: #4CAF50;*/
-    /*padding: 14px 28px;*/
-    /*font-size: 16px;*/
-    /*cursor: pointer;*/
-    /*text-align: center;*/
-    /*font-weight: bold;*/
-    /*color: #FFFEE3;*/
+:root {
+    --add-fact-button-height: 4em;
 }
 
-#add_fact_button {
-    position: fixed; /*absolute;*/
-    top: 0; /*-4px;*/
+#chuck-fact-manager {
+    width: 90%;
+    height: 500px;
+    margin: auto;
 }
 
-/*#add_fact_button:hover {*/
-/*    background-color: #2d662f;*/
-/*}*/
+#chuck-fact-manager-main-region {
+    position: relative;
+    background: #fff;
+    max-width: 1000px;
+    min-height: 100vh;
+    padding-top: calc(var(--add-fact-button-height) * 1.3);
+    box-sizing: border-box; /*to include the padding in the total size of the div (otherwise, min-height: 100vh doesn't work as expected)*/
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing:    border-box;
+    margin: 0 auto; /*top and bottom margins are 0, left and right are auto (the result is that the div gets centered within its parent) */
+    box-shadow: 0 0 10px 3px rgba(0,0,0,0.8);
+}
 
-/*#add_fact_button:focus {*/
-/*    !*outline: none;*!*/
-/*}*/
+#new-fact-region {
+    max-width: 1000px;
+    width: 90%;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
 
-/*#add_fact_button:active {*/
-/*    background-color: #65e669;*/
-/*}*/
+#add-fact-button {
+    height: var(--add-fact-button-height);
+}
 
-#add_fact_button_hidden {
-    visibility: hidden;
+.textCell {
+    padding: 8px 0 8px 10px;
+}
+
+.textCell button {
+    background: none;
+    border: none;
+    outline: none;
+    padding: 0;
+    text-align: left;
+    /*I need to explicitly tell the button to inherit font-family and size, otherwise it will adopt
+    the default button styles*/
+    font-family: inherit;
+    font-size: inherit;
 }
 
 
+button.icon {
+    --size: 32px;
+    background-color: Transparent;
+    outline: 0;
+    border: 0;
+    background-size: var(--size);
+    height: var(--size);
+    width: var(--size);
+    /*padding: 0px;*/
+    margin: 5px;
+    vertical-align: middle;
+}
 
+button.unstarred {
+    background-image: url("resources/star-icon-gray.png");
+}
+
+button.unstarred:disabled {
+    background-image: url("resources/star-icon-disabled.png");
+    /*cursor: not-allowed;*/
+    pointer-events: none;
+}
+
+button.unstarred:hover {
+    background-image: url("resources/star-icon-yellow.png");
+}
+
+button.starred {
+    background-image: url("resources/star-icon-gold.png");
+}
+
+button.delete {
+    background-image: url("resources/trash-icon-gray.png");
+}
+
+button.delete:disabled {
+    background-image: url("resources/trash-icon-disabled.png");
+    pointer-events: none;
+}
+
+button.delete:hover {
+    background-image: url("resources/trash-icon.png");
+}
