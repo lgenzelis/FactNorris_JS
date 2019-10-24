@@ -2,10 +2,12 @@ import React from 'react';
 import './styles.css';
 import './chuck_app.css';
 import axios from 'axios';
-import './myToast.css';
+import {useLocation} from "react-router-dom";
 import toaster from 'toasted-notes';
+import queryString from 'query-string';
+import './myToast.css';
 import undo_arrow from './resources/undo.png'
-
+import {localStorageManager, showErrorPopup} from "./utils"
 
 function ActionButton({isDisabled, onClickHandler, className}) {
     return (
@@ -44,7 +46,7 @@ function ActionsBlock({isDisabled, isStarred, starButtonHandler, deleteButtonHan
 class LoadingFact extends React.Component {
 
     maxNPoints = 4;
-    timeBetweenPoints = 200; // milliseconds
+    timeBetweenPoints = 200; // in milliseconds
 
     constructor(props) {
         super(props);
@@ -95,37 +97,23 @@ function TextBlock({fact, isStarred, onClickHandler}) {
 }
 
 
-// This class renders each fact, along with its corresponding action buttons
-class ChuckFactContainer extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.domRef = React.createRef();
-    }
-
-    componentDidMount() {
-        // scroll the window so that the fact in visible in the screen
-        window.scroll({top: this.domRef.current.offsetTop, behavior: 'smooth'});
-    }
-
-    render() {
-        return (
-            <tr ref={this.domRef}>
-                <ActionsBlock
-                    isDisabled = {this.props.fact === null}
-                    isStarred = {this.props.isStarred}
-                    deleteButtonHandler={() => this.props.deleteButtonHandler(this.props.factId)}
-                    starButtonHandler={() => this.props.starButtonHandler(this.props.factId)}
-                />
-                <TextBlock
-                    isStarred = {this.props.isStarred}
-                    onClickHandler={() => this.props.starButtonHandler(this.props.factId)}
-                    fact = {this.props.fact}
-                />
-            </tr>
-        );
-    }
-
+// This function renders each fact, along with its corresponding action buttons
+function ChuckFactPresentation({fact, factId, isStarred, deleteButtonHandler, starButtonHandler}) {
+    return (
+        <tr>
+            <ActionsBlock
+                isDisabled = {fact === null}
+                isStarred = {isStarred}
+                deleteButtonHandler={() => deleteButtonHandler(factId)}
+                starButtonHandler={() => starButtonHandler(factId)}
+            />
+            <TextBlock
+                isStarred = {isStarred}
+                onClickHandler={() => starButtonHandler(factId)}
+                fact = {fact}
+            />
+        </tr>
+    );
 }
 
 
@@ -141,6 +129,7 @@ function NewFactButton({zeroFacts, addNewFact}) {
         </button>
     );
 }
+
 
 function UndoPopup({restoreFact, onClose}) {
     return (
@@ -159,7 +148,7 @@ function UndoPopup({restoreFact, onClose}) {
 }
 
 
-export default class ChuckFactsManager extends React.Component {
+class ChuckFactsManager extends React.Component {
 
     constructor(props) {
         super(props);
@@ -171,7 +160,7 @@ export default class ChuckFactsManager extends React.Component {
 
     componentDidMount() {
         // load facts stored in localStorage
-        const storedFacts = localStorage['STARRED-CHUCK-FACTS'];
+        const storedFacts = localStorageManager.loadFromLocalStorage('STARRED-CHUCK-FACTS');
         if (storedFacts !== undefined) {
             this.setState({facts: JSON.parse(storedFacts)});
         }
@@ -182,19 +171,7 @@ export default class ChuckFactsManager extends React.Component {
         if (loadingFactId !== undefined) {
             this.deleteFact(loadingFactId);
         }
-        const errorMsgRendered =
-            <div className="popup">
-                <p>
-                    <strong>An error has occurred :(</strong>
-                </p>
-                <p>
-                    {errorMsg}
-                </p>
-            </div>;
-        toaster.notify(errorMsgRendered, {
-            duration: null, // i.e., don't auto-dismiss
-            position: "bottom",
-        });
+        showErrorPopup(errorMsg);
     }
 
     getFactIdx(facts, factId) {
@@ -207,9 +184,12 @@ export default class ChuckFactsManager extends React.Component {
     }
 
     restoreFact(fact, idx) {
-        this.setState((state) => {
+        this.setState(state => {
             const newFacts = state.facts.slice();
             newFacts.splice(idx, 0, fact);
+            // if the un-deleted fact was starred, update localStorage
+            const starredFacts = newFacts.filter(({isStarred}) => isStarred);
+            localStorageManager.saveToLocalStorage('STARRED-CHUCK-FACTS', JSON.stringify(starredFacts));
             return {facts: newFacts};
         });
     }
@@ -237,7 +217,7 @@ export default class ChuckFactsManager extends React.Component {
                 if (factToDelete.isStarred) {
                     // if the deleted fact was starred, update localStorage
                     const starredFacts = newFacts.filter(({isStarred}) => isStarred);
-                    localStorage.setItem('STARRED-CHUCK-FACTS', JSON.stringify(starredFacts));
+                    localStorageManager.saveToLocalStorage('STARRED-CHUCK-FACTS', JSON.stringify(starredFacts));
                 }
                 return {facts: newFacts};
             }
@@ -300,17 +280,17 @@ export default class ChuckFactsManager extends React.Component {
     }
 
     newFactButtonHandler = () => {
-        const loadingFactId = 'loading' + String(this.nFactsRequested);
-        this.nFactsRequested++;
+        const loadingFactId = 'loading' + String(this.nFactsRequested++);
         this.setState((state) => ({
-                facts:
-                    state.facts.concat([{
-                        factId: loadingFactId,
-                        fact: null,
-                        isStarred: false,
-                    }]),
-            })
-        );
+            facts: [
+                ...state.facts,
+                {
+                    factId: loadingFactId,
+                    fact: null,
+                    isStarred: false,
+                }
+            ]
+        }));
         // addNewFact needs to know the id of the corresponding loadingFact, in order to delete it once the fact
         // gets loaded
         this.addNewFact(loadingFactId);
@@ -327,7 +307,7 @@ export default class ChuckFactsManager extends React.Component {
                 newFacts[idx] = modifiedFact;
                 // update local storage, adding the new starred fact or removing the unstarred one
                 const starredFacts = newFacts.filter(({isStarred}) => isStarred);
-                localStorage.setItem('STARRED-CHUCK-FACTS', JSON.stringify(starredFacts));
+                localStorageManager.saveToLocalStorage('STARRED-CHUCK-FACTS', JSON.stringify(starredFacts));
                 return {facts: newFacts};
             }
         });
@@ -336,7 +316,7 @@ export default class ChuckFactsManager extends React.Component {
     render() {
         const chuckFactsRendered = this.state.facts.map(
             ({factId, fact, isStarred}) =>
-                <ChuckFactContainer
+                <ChuckFactPresentation
                     key={factId}
                     factId={factId}
                     fact={fact}
@@ -364,4 +344,9 @@ export default class ChuckFactsManager extends React.Component {
         );
     }
 
+}
+
+export default function ChuckFactsManagerMain() {
+    const location = useLocation();
+    return <ChuckFactsManager showNsfwFacts={queryString.parse(location.search).show_nsfw === 'true'}/>;
 }

@@ -45,15 +45,14 @@
     padding: 0;
     text-align: left;
     /*I need to explicitly tell the button to inherit font-family and size, otherwise it will adopt
-    the default button styles*/
+    the browser default button styles*/
     font-family: inherit;
     font-size: inherit;
 }
 
-
 button.icon {
     --size: 32px;
-    background-color: Transparent;
+    background-color: transparent;
     outline: 0;
     border: 0;
     background-size: var(--size);

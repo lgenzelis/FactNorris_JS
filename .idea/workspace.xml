@@ -1,34 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c449f165-cc97-4535-a92e-b9da3c0000a0" name="Default Changelist" comment="New functionality: star and delete facts. Code is now written using better React practices.">
-      <change afterPath="$PROJECT_DIR$/.idea/chuck_facts.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/luks.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/myToast.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/dancing_chuck.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/others/staricon.xcf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/others/trashicon.xcf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/star-icon-disabled.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/star-icon-gold.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/star-icon-gray.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/star-icon-yellow.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/trash-icon-disabled.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/trash-icon-gray.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/trash-icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/undo.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/public_api_tests.iml" beforeDir="false" />
+    <list default="true" id="c449f165-cc97-4535-a92e-b9da3c0000a0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/enter_screen.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/dancing_chuck.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/public/favicon.ico" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chuck_app.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/chuck_app.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chuck_app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chuck_app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fancy_button.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/fancy_checkbox.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles.css" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -62,7 +43,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="JavaScript" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
@@ -77,6 +58,11 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="http.proxy" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+    </key>
   </component>
   <component name="RestClientSettings">
     <option name="REQUEST_HISTORY">
@@ -223,7 +209,13 @@
       <workItem from="1570409158369" duration="3393000" />
       <workItem from="1570650393384" duration="5314000" />
       <workItem from="1570718062568" duration="295000" />
-      <workItem from="1570718380204" duration="17066000" />
+      <workItem from="1570718380204" duration="17260000" />
+      <workItem from="1571934856857" duration="561000" />
+      <workItem from="1571935553406" duration="65000" />
+      <workItem from="1571935683114" duration="37000" />
+      <workItem from="1571936671644" duration="290000" />
+      <workItem from="1571937118658" duration="40000" />
+      <workItem from="1571937568776" duration="20919000" />
     </task>
     <task id="LOCAL-00001" summary="First completely functional version. Lets you fetch random facts (disregarding categories) and show them on the screen.">
       <created>1569076156823</created>
@@ -239,7 +231,14 @@
       <option name="project" value="LOCAL" />
       <updated>1569282360878</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="New functionality: star and delete facts. Code is now written using better React practices.">
+      <created>1570736603372</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1570736603372</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
